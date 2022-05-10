@@ -9,3 +9,9 @@ variable "key_name" {
 variable "default_cidr_block" {
   default = "0.0.0.0/0"
 }
+
+variable "tags" {
+  default = {
+    Project = "Jenkins"
+  }
+}
