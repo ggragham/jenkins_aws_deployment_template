@@ -37,7 +37,7 @@ resource "aws_security_group" "jenkins" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description = "tpc 8080"
+    description = "tcp 8080"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
