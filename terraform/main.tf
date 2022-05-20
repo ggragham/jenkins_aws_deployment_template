@@ -41,20 +41,20 @@ resource "aws_security_group" "jenkins" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = [var.default_cidr_block]
+    cidr_blocks = ["${var.default_cidr_block}/32"]
   }
   ingress {
     description = "tcp 22"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.default_cidr_block]
+    cidr_blocks = ["${var.default_cidr_block}/32"]
   }
   egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = [var.default_cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 }
