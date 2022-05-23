@@ -13,38 +13,53 @@
             name: '*'
             state: latest
             update_cache: true
-          notify: Restart Jeninks
 
-        - name: Install dependencies
+        - name: Install Java
           apt:
-            name:
-              - ca-certificates
-              - curl
-              - gnupg
-              - lsb-release
-              - default-jre
+            name: default-jre
             state: latest
             update_cache: true
-
-        - name: Add key
-          apt_key:
-            url: https://pkg.jenkins.io/debian/jenkins.io.key
-            state: present
-
-        - name: Add stable Jenkins repo
-          apt_repository:
-            repo: deb https://pkg.jenkins.io/debian-stable binary/
-            state: present
-
-        - name: Install Jeninks
-          apt:
-            name: jenkins
-            state: latest
-            update_cache: true
-          notify: Start Jenkins
 
       when: ansible_pkg_mgr == "apt"
 
+# ==============================================================
+
+- name: Install Jeninks
+  hosts: tag_NodeType_master
+  become: true
+
+  vars:
+    ansible_python_interpreter: /usr/bin/env python3
+
+  tasks:
+    - name: Install dependencies
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: latest
+        update_cache: true
+
+    - name: Add key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+
+    - name: Add stable Jenkins repo
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
+
+    - name: Install Jeninks
+      apt:
+        name: jenkins
+        state: latest
+        update_cache: true
+      notify: Restart Jenkins
+
+      when: ansible_pkg_mgr == "apt"
 
     - name: Gather facts about ec2
       amazon.aws.ec2_metadata_facts:
@@ -63,13 +78,7 @@
         msg: 'Use this password to unlock Jenkins: {{ jenkinsAdminPass.stdout }}'
 
   handlers:
-    - name: Start Jenkins
-      service:
-        name: jenkins
-        state: started
-        enabled: true
-
-    - name: Restart Jeninks
+    - name: Restart Jenkins
       service:
         name: jenkins
         state: restarted
