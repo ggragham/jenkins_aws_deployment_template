@@ -14,11 +14,7 @@ output "slave_id" {
   value = aws_instance.slave.*.id
 }
 
-output "slave_public_ip" {
-  value = aws_instance.slave.*.public_ip
-}
-
-output "slave_public_dns" {
-  value = aws_instance.slave.*.public_dns
+output "slave_private_ip" {
+  value = aws_instance.slave.*.private_ip
 }
 
