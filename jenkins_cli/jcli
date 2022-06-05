@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+JENKINS_CLI_PATH="/home/jenkins/jenkins_cli/jenkins_cli.jar"
+
+if [[ -f $JENKINS_CLI_PATH ]]; then
+    java -jar "$JENKINS_CLI_PATH" "$@"
+else
+    echo "jenkins_cli.jar is missing"
+    exit 1
+fi
