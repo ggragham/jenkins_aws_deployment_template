@@ -7,7 +7,6 @@ if [[ -z $JENKINS_URL ]]; then
     exit 1
 else
     JENKINS_CLI_URL="$JENKINS_URL/jnlpJars/jenkins-cli.jar"
-    echo "$JENKINS_CLI_URL"
     curl "$JENKINS_CLI_URL" -o jenkins_cli.jar
 fi
 
