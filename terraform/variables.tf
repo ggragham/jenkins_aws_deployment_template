@@ -30,5 +30,5 @@ variable "slave_tags" {
 }
 
 variable "slave_count" {
-  default = "1"
+  default = "0"
 }
