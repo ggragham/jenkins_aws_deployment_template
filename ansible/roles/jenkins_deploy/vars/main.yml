@@ -1,0 +1,4 @@
+---
+# vars file for jenkins_deploy
+
+ansible_python_interpreter: /usr/bin/env python3

@@ -1,0 +1,4 @@
+---
+# vars file for java_install
+
+ansible_python_interpreter: /usr/bin/env python3

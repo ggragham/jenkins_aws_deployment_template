@@ -1,0 +1,54 @@
+---
+# tasks file for jenkins_deploy
+
+- block:
+    - name: Update deb-based system
+      apt:
+        name: '*'
+        state: latest
+        update_cache: true
+      notify: Restart Jenkins
+
+    - name: Install dependencies
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: latest
+        update_cache: true
+
+    - name: Add key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+
+    - name: Add stable Jenkins repo
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
+
+    - name: Install Jeninks
+      apt:
+        name: jenkins
+        state: latest
+        update_cache: true
+      notify: Start Jenkins
+
+  when: ansible_pkg_mgr == "apt"
+
+- name: Gather facts about ec2
+  amazon.aws.ec2_metadata_facts:
+
+- name: Output Jenkins admin pass
+  command: cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: jenkinsAdminPass
+
+- name: Print url
+  debug:
+    msg: 'Use this URL to acces Jenkins: http://{{ ansible_ec2_public_hostname }}:8080'
+
+- name: Print ip, dns and Admin password
+  debug:
+    msg: 'Use this password to unlock Jenkins: {{ jenkinsAdminPass.stdout }}'

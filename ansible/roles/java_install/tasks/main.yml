@@ -1,0 +1,17 @@
+---
+# tasks file for java_install
+
+- block:
+    - name: Update deb-based system
+      apt:
+        name: '*'
+        state: latest
+        update_cache: true
+
+    - name: Install Java
+      apt:
+        name: default-jre
+        state: latest
+        update_cache: true
+
+  when: ansible_pkg_mgr == "apt"

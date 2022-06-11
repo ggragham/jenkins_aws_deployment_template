@@ -1,0 +1,13 @@
+---
+# handlers file for jenkins_deploy
+
+- name: Start Jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: true
+
+- name: Restart Jenkins
+  service:
+    name: jenkins
+    state: restarted
